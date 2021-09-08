@@ -101,6 +101,40 @@ declare namespace OIPF {
         audioDescriptionEnabled: boolean;
 
         /**
+         * Returns either a string representing a distinctive identifier that is unique for the combination of the
+         * terminal and the HTML document origin or a status code. The distinctive identifier shall use a character set
+         * that is restricted to alphanumeric characters and the hyphen. The status code shall be a number preceded by
+         * the '#' character.
+         * 
+         * Valid values:
+         * 
+         * #1 - The terminal is configured to request explicit user approval for this application. The application may
+         * call requestAccessToDistinctiveIdentifier to obtain such approval even if this method has previously been
+         * called and the user did not grant access.
+         * 
+         * #2 - following a previous call by the application to requestAccessToDistinctiveIdentifier. Further calls to 
+         * requestAccessToDistinctiveIdentifier do not result in the user being asked again for approval. This is for
+         * use by terminals that restrict the number of times that an application may call this method.
+         * 
+         * #3 - Access to the distinctive identifier is denied in accordance with the user option setting - see clause
+         * 12.1.5).
+         * 
+         * #4 - Access to the distinctive identifier is denied by the terminal manufacturer, e.g. because the
+         * application provider and the terminal manufacturer have not entered into a suitable agreement covering such
+         * access.
+         * 
+         * #5 Access to the distinctive identifier is denied as the application has not yet been activated.
+         */
+        deviceId: string;
+        
+        /**
+         * Returns the ordered list of DVB network_ids from the DTT channels, if any, that are included in the
+         * terminal's channel list. If the terminal does not have a DTT receiver or no DTT channels are present in the
+         * channel list then the property shall be undefined.
+         */
+        dtt_network_ids: number[];
+
+        /**
          * Get the system text string that has been set for the specified key. 
          * 
          * @param key A key identifying the system text string to be retrieved.
@@ -128,5 +162,29 @@ declare namespace OIPF {
          */
         setText( key: 'no_title' | 'no_synopsis' | 'manual_recording', value?: string ): void;
 
+        /**
+         * Calls the callback with true as the first argument if the deviceId property contains a distinctive
+         * identifier, otherwise calls the callback with false as the first argument. This callback takes place either
+         * immediately or after a user interaction according to the following rules.
+         * 
+         * Calls to this method while a callback is outstanding shall be ignored. If this method is supported, the
+         * terminal shall provide some native UI that requests the user to grant access to the distinctive identifier
+         * for the calling application. The terminal may persistently store the user response between invocations of the
+         * application.
+         * 
+         * If the deviceId property contains the value "#1", the terminal shall display this native UI when this method 
+         * s called. The callback shall be called only after the UI is removed and the argument shall reflect the
+         * updated state of the deviceId property following the interaction with the user. This method call shall not
+         * block while the UI is displayed.
+         * 
+         * If the deviceId property contains a different status code, the terminal shall not display the native UI and
+         * shall immediately call the callback with false as the first argument.
+         * 
+         * If the deviceId property already contains a distinctive identifier, the terminal shall not display the native
+         * UI and shall immediately call the callback with true as the first argument.
+         */
+
+        requestAccessToDistinctiveIdentifier(callback: Function): void;
+        
     }
 }
