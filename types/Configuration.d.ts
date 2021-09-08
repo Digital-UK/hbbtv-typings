@@ -87,6 +87,20 @@ declare namespace OIPF {
         pvrEndPadding: number;
 
         /**
+         * Shall be set to false if subtitles are disabled by the terminal. When set to false, subtitle components that
+         * are selected using a video/broadcast object, A/V control object or HTML5 media element will not be presented.
+         * See also clause 10.2.7 in HBBTV Spec
+         */
+        subtitlesEnabled: boolean;
+
+        /**
+         * Shall be set to false if audio description is disabled by the terminal, otherwise shall be set to true.
+         * If set to false, applications should not enable audio description using the component selection API of the
+         * supported media objects i.e. A/V Control object, video/broadcast object and HTML5 media elements.
+         */
+        audioDescriptionEnabled: boolean;
+
+        /**
          * Get the system text string that has been set for the specified key. 
          * 
          * @param key A key identifying the system text string to be retrieved.
