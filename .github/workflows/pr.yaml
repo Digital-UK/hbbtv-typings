@@ -53,6 +53,8 @@ jobs:
         id: lint
         run: |
           npm run tslint --if-present | tee -a tslint-output.md
+          EXIT_CODE=${PIPESTATUS[0]}
           echo "### Lint Output" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           cat tslint-output.md >> $GITHUB_STEP_SUMMARY
+          exit $EXIT_CODE
