@@ -16,7 +16,7 @@ declare namespace OpApp {
 
     }
 
-    export const enum OpAppUpdateEvent {
+    export const enum OpAppUpdateEventType {
         SOFTWARE_DISCOVERING = "SOFTWARE_DISCOVERING",
         SOFTWARE_DISCOVERY_FAILED = "SOFTWARE_DISCOVERY_FAILED",
         SOFTWARE_CURRENT = "SOFTWARE_CURRENT",
@@ -41,7 +41,8 @@ declare namespace OpApp {
         OPAPP_HOME_MENU = "opapp-homemenu",
         OPAPP_PIN = "opapp-pin",
         OPAPP_RECORDING = "opapp-recording",
-        OPAPP_SEARCH = "opapp-search"
+        OPAPP_SEARCH = "opapp-search",
+        OPAPP_SILENT = "opapp-silent"
     }
 
     /**
@@ -56,6 +57,26 @@ declare namespace OpApp {
         RESTART = "restart",
     }
 
+    export const enum ApplicationEvents {
+        OperatorApplicationContextChange = 'OperatorApplicationContextChange',
+        OperatorApplicationStateChange = 'OperatorApplicationStateChange',
+        OperatorApplicationStateChangeCompleted = 'OperatorApplicationStateChangeCompleted',
+        OpAppUpdate = 'OpAppUpdate',
+    }
+    export interface OpAppContextChangeEvent extends Event {
+        launchLocation: string;
+        startupLocation: string;
+    }
+
+    export interface OpAppStateChangeEvent extends Event {
+        oldState: string;
+        newState: string;
+    }
+
+    export interface OpAppUpdateEventEvent extends Event {
+        updateEvent: string;
+    }
+
     export class Application extends OIPF.Application {
 
         /* Properties */
@@ -67,8 +88,6 @@ declare namespace OpApp {
          * If read by a regular HbbTV® application, undefined shall be returned.
          */
         readonly opAppState: OpAppState | undefined;
-
-        readonly privateData: OIPF.ApplicationPrivateData;
 
         /* Events */
 
@@ -96,7 +115,7 @@ declare namespace OpApp {
          * The function that is called when the operator application's update state is changed
          * @param updateEvent - the name of the triggered update event
          */
-        onOpAppUpdate(updateEvent: OpAppUpdateEvent): void;
+        onOpAppUpdate(updateEvent: OpAppUpdateEventType): void;
 
         /**
          * The function shall be called due to a request made by the user from the terminal. The specified function is
@@ -108,6 +127,15 @@ declare namespace OpApp {
         onOperatorApplicationContextChange(startupLocation?: OpAppStartupLocation | string, launchLocation?: OpAppLaunchLocation | string): void;
 
         /* Methods */
+
+        addEventListener(type: ApplicationEvents.OperatorApplicationContextChange, handler: (event: OpAppContextChangeEvent) => void): void;
+        addEventListener(type: ApplicationEvents.OperatorApplicationStateChange, handler: (event: OpAppStateChangeEvent) => void): void;
+        addEventListener(type: ApplicationEvents.OperatorApplicationStateChangeCompleted, handler: (event: OpAppStateChangeEvent) => void): void;
+        addEventListener(type: ApplicationEvents.OpAppUpdate, handler: (event: OpAppUpdateEventEvent) => void): void;
+        removeEventListener(type: ApplicationEvents.OperatorApplicationContextChange, handler: (event: OpAppContextChangeEvent) => void): void;
+        removeEventListener(type: ApplicationEvents.OperatorApplicationStateChange, handler: (event: OpAppStateChangeEvent) => void): void;
+        removeEventListener(type: ApplicationEvents.OperatorApplicationStateChangeCompleted, handler: (event: OpAppStateChangeEvent) => void): void;
+        removeEventListener(type: ApplicationEvents.OpAppUpdate, handler: (event: OpAppUpdateEventEvent) => void): void;
 
         /**
          * Requests the terminal to move the calling operator application to transient state or requests the terminal to
@@ -178,11 +206,7 @@ declare namespace OpApp {
 
         onApplicationUnloaded(): void;
 
-        show(): void;
-
-        hide(): void;
-
-        destoryApplication(): void;
+        destroyApplication(): void;
 
     }
 

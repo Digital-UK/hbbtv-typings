@@ -10,6 +10,7 @@ declare namespace OpApp {
         UNREALIZED = 0,
         CONNECTING = 1,
         PRESENTING = 2,
+        STOPPED = 3,
     }
 
     export type playStateError = ChannelChangeErrorState;
