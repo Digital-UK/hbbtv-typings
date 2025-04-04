@@ -1,3 +1,6 @@
+/// <reference path="../AVComponent.d.ts" />
+/// <reference path="../AVComponentCollection.d.ts" />
+
 import VideoBroadcastObject = OIPF.VideoBroadcastObject;
 
 declare namespace OpApp {
