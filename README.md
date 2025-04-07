@@ -12,7 +12,7 @@ See https://www.hbbtv.org/resource-library/#specifications
 npm install @digital-uk/hbbtv-typings
 ```
 
-Add `"./node_modules/hbbtv-typings"` to `"include"` array of `tsconfig.json`.
+Add `"./node_modules/hbbtv-typings"` to `"types"` array of `tsconfig.json`.
 
 ## Usage
 
