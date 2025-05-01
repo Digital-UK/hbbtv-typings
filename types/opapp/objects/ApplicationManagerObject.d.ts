@@ -1,5 +1,13 @@
 declare namespace OpApp {
 
+    export interface ApplicationLoadEvent extends Event {
+        appl: OpApp.Application;
+    }
+
+    export interface ApplicationLoadEventListener {
+        (event: OpApp.ApplicationLoadEvent): void;
+    }
+
     /**
      * 7.2.1 The application/oipfApplicationManager embedded object
      An OITF SHALL support a non-visual embedded object of type “application/oipfApplicationManager”, with
@@ -10,6 +18,12 @@ declare namespace OpApp {
      */
     export interface ApplicationManagerObject extends OIPF.ApplicationManagerObject {
         type: 'application/oipfApplicationManager';
+        addEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoaded, listener: OpApp.ApplicationLoadEventListener): void;
+        addEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoadError, listener: OpApp.ApplicationLoadEventListener): void;
+        addEventListener(type: OIPF.ApplicationManagerEvents.ApplicationUnloaded, listener: OpApp.ApplicationLoadEventListener): void;
+        removeEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoaded, listener: OpApp.ApplicationLoadEventListener): void;
+        removeEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoadError, listener: OpApp.ApplicationLoadEventListener): void;
+        removeEventListener(type: OIPF.ApplicationManagerEvents.ApplicationUnloaded, listener: OpApp.ApplicationLoadEventListener): void;
 
         /**
          * The function that is called when the OITF is running low on available memory for running DAE

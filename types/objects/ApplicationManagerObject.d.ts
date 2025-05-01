@@ -1,5 +1,19 @@
 declare namespace OIPF {
 
+    export const enum ApplicationManagerEvents {
+        ApplicationLoaded = 'ApplicationLoaded',
+        ApplicationLoadError = 'ApplicationLoadError',
+        ApplicationUnloaded = 'ApplicationUnloaded',
+    }
+
+    export interface ApplicationLoadEvent extends Event {
+        appl: OIPF.Application;
+    }
+
+    export interface ApplicationLoadEventListener {
+        (event: OIPF.ApplicationLoadEvent): void;
+    }
+
     /**
      * 7.2.1 The application/oipfApplicationManager embedded object
     An OITF SHALL support a non-visual embedded object of type “application/oipfApplicationManager”, with
@@ -10,6 +24,12 @@ declare namespace OIPF {
     */
     export interface ApplicationManagerObject extends HTMLObjectElement {
         type: 'application/oipfApplicationManager';
+        addEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoaded, listener: OIPF.ApplicationLoadEventListener): void;
+        addEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoadError, listener: OIPF.ApplicationLoadEventListener): void;
+        addEventListener(type: OIPF.ApplicationManagerEvents.ApplicationUnloaded, listener: OIPF.ApplicationLoadEventListener): void;
+        removeEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoaded, listener: OIPF.ApplicationLoadEventListener): void;
+        removeEventListener(type: OIPF.ApplicationManagerEvents.ApplicationLoadError, listener: OIPF.ApplicationLoadEventListener): void;
+        removeEventListener(type: OIPF.ApplicationManagerEvents.ApplicationUnloaded, listener: OIPF.ApplicationLoadEventListener): void;
 
         /**
          * The function that is called when the OITF is running low on available memory for running DAE
