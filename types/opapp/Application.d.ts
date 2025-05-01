@@ -9,11 +9,10 @@ declare namespace OpApp {
     }
 
     export const enum OpAppUpdateStatus {
-        DISCOVERY_IN_PROGRSS = -3,
+        DISCOVERY_IN_PROGRESS = -3,
         NO_UPDATE_IN_PROGRESS = -2,
         NEW_SOFTWARE_AVAILABLE_FOR_DOWNLOAD = -1,
         SOFTWARE_DOWNLOAD_SUCCESSFULL = 100,
-
     }
 
     export const enum OpAppUpdateEventType {
@@ -67,16 +66,19 @@ declare namespace OpApp {
         launchLocation: string;
         startupLocation: string;
     }
+    export type OpAppContextChangeEventListener = (event: OpApp.OpAppContextChangeEvent) => void;
 
     export interface OpAppStateChangeEvent extends Event {
         oldState: string;
         newState: string;
     }
+    export type OpAppStateChangeEventListener = (event: OpApp.OpAppStateChangeEvent) => void;
 
-    export interface OpAppUpdateEventEvent extends Event {
+    export interface OpAppUpdateEvent extends Event {
         updateEvent: string;
     }
-
+    export type OpAppUpdateEventListener = (event: OpApp.OpAppUpdateEvent) => void;
+    
     export class Application extends OIPF.Application {
 
         /* Properties */
@@ -128,14 +130,14 @@ declare namespace OpApp {
 
         /* Methods */
 
-        addEventListener(type: ApplicationEvents.OperatorApplicationContextChange, handler: (event: OpAppContextChangeEvent) => void): void;
-        addEventListener(type: ApplicationEvents.OperatorApplicationStateChange, handler: (event: OpAppStateChangeEvent) => void): void;
-        addEventListener(type: ApplicationEvents.OperatorApplicationStateChangeCompleted, handler: (event: OpAppStateChangeEvent) => void): void;
-        addEventListener(type: ApplicationEvents.OpAppUpdate, handler: (event: OpAppUpdateEventEvent) => void): void;
-        removeEventListener(type: ApplicationEvents.OperatorApplicationContextChange, handler: (event: OpAppContextChangeEvent) => void): void;
-        removeEventListener(type: ApplicationEvents.OperatorApplicationStateChange, handler: (event: OpAppStateChangeEvent) => void): void;
-        removeEventListener(type: ApplicationEvents.OperatorApplicationStateChangeCompleted, handler: (event: OpAppStateChangeEvent) => void): void;
-        removeEventListener(type: ApplicationEvents.OpAppUpdate, handler: (event: OpAppUpdateEventEvent) => void): void;
+        addEventListener(type: ApplicationEvents.OperatorApplicationContextChange, listener: OpApp.OpAppContextChangeEventListener): void;
+        addEventListener(type: ApplicationEvents.OperatorApplicationStateChange, listener: OpApp.OpAppStateChangeEventListener): void;
+        addEventListener(type: ApplicationEvents.OperatorApplicationStateChangeCompleted, listener: OpApp.OpAppStateChangeEventListener): void;
+        addEventListener(type: ApplicationEvents.OpAppUpdate, listener: OpApp.OpAppUpdateEventListener): void;
+        removeEventListener(type: ApplicationEvents.OperatorApplicationContextChange, listener: OpApp.OpAppContextChangeEventListener): void;
+        removeEventListener(type: ApplicationEvents.OperatorApplicationStateChange, listener: OpApp.OpAppStateChangeEventListener): void;
+        removeEventListener(type: ApplicationEvents.OperatorApplicationStateChangeCompleted, listener: OpApp.OpAppStateChangeEventListener): void;
+        removeEventListener(type: ApplicationEvents.OpAppUpdate, listener: OpApp.OpAppUpdateEventListener): void;
 
         /**
          * Requests the terminal to move the calling operator application to transient state or requests the terminal to
@@ -196,7 +198,7 @@ declare namespace OpApp {
 
         opAppUninstall(): boolean;
 
-        getPrivateLocalStorage(): WindowLocalStorage;
+        getPrivateLocalStorage(): Storage;
 
         getOpApp2AppBaseURL(): string;
 
