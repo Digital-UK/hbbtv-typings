@@ -1,14 +1,12 @@
 declare namespace OIPF {
 
-    import BroadcastSupervisor = OpApp.BroadcastSupervisor;
-
     export const enum PINControlStatus {
         CORRECT_PIN = 0,
         INCORRECT_PIN = 1,
         LOCKED = 2,
     }
 
-    export const enum VerifyParentalConrolStatus {
+    export const enum VerifyParentalControlStatus {
         APPROVED = "approved",
         NOT_APPROVED = "notApproved",
     }
@@ -17,11 +15,11 @@ declare namespace OIPF {
         type: 'application/oipfParentalControlManager';
         parentalPINLength: number;
         isPINEntryLocked(): boolean;
-        setParentalControlStatus(pcPIN: string, enable: boolean): PINControlStatus;
-        getParentalControlStatus(): PINControlStatus;
-        unlockWithParentalControlPIN(pcPIN: string, target: VideoBroadcastObject | BroadcastSupervisor | HTMLMediaElement): PINControlStatus | 3;
-        verifyParentalControlPIN(pcPIN: string): PINControlStatus;
-        verifyParentalControl(context: object): Promise<VerifyParentalConrolStatus>;
+        setParentalControlStatus(pcPIN: string, enable: boolean): OIPF.PINControlStatus;
+        getParentalControlStatus(): OIPF.PINControlStatus;
+        unlockWithParentalControlPIN(pcPIN: string, target: OIPF.VideoBroadcastObject | HTMLMediaElement): OIPF.PINControlStatus | 3;
+        verifyParentalControlPIN(pcPIN: string): OIPF.PINControlStatus;
+        verifyParentalControl(context: object): Promise<OIPF.VerifyParentalControlStatus>;
     }
 
 }
