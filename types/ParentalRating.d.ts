@@ -6,4 +6,8 @@ declare namespace OIPF {
         readonly labels: number;
         readonly region: string;
     }
+
+    export interface ParentalRatingScheme {
+        name: string;
+    }
 }
