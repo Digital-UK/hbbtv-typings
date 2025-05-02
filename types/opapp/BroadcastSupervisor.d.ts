@@ -1,8 +1,6 @@
 /// <reference path="../AVComponent.d.ts" />
 /// <reference path="../AVComponentCollection.d.ts" />
 
-import VideoBroadcastObject = OIPF.VideoBroadcastObject;
-
 declare namespace OpApp {
 
     /* enums */
@@ -33,6 +31,12 @@ declare namespace OpApp {
         UNIDENTIFIED_ERROR = 100,
     }
 
+    export interface ChannelChangeEvent extends OIPF.ChannelChangeEvent {
+        quiet?: number;
+        viewerChannel?: OIPF.Channel;
+    }
+    export type ChannelChangeEventListener = (event: OpApp.ChannelChangeEvent) => void;
+
     export const enum AVComponentType {
         COMPONENT_TYPE_VIDEO = 0,
         COMPONENT_TYPE_AUDIO = 1,
@@ -45,47 +49,6 @@ declare namespace OpApp {
         POSITION_END = 2
     }
 
-    export const enum BroadcastSupervisorEvents {
-        ChannelChangeSucceeded = "ChannelChangeSucceeded",
-        ChannelChangeError = "ChannelChangeError",
-        PlayStateChange = "PlayStateChange",
-        PlaySpeedChanged = "PlaySpeedChanged",
-        PlayPositionChanged = "PlayPositionChanged",
-        ProgrammesChanged = "ProgrammesChanged",
-        ParentalRatingChange = "ParentalRatingChange",
-        ParentalRatingError = "ParentalRatingError",
-        SelectedComponentChanged = "SelectedComponentChanged"
-    }
-
-    export interface ChannelChangeEvent extends Event {
-        channel: OIPF.Channel;
-        errorState?: number;
-    }
-    export interface PlayStateChangeEvent extends Event {
-        state: number;
-        error?: number;
-    }
-
-    export interface PlaySpeedChangedEvent extends Event {
-        speed: number;
-    }
-
-    export interface PlayPositionChangedEvent extends Event {
-        position: number;
-    }
-
-    export interface ParentalRatingChangeEvent extends Event {
-        contentID: string;
-        ratings: OIPF.Collection<OIPF.ParentalRating>;
-        DRMSystemID: string;
-        blocked: boolean;
-    }
-    
-    export interface SelectedComponentChangeEvent extends Event {
-        componentType: number;
-    }
-
-    export type ParentalRatingErrorEvent = Omit<OpApp.ParentalRatingChangeEvent, 'blocked'>;
 
     /**
      * BroadcastSupervisor
@@ -93,6 +56,7 @@ declare namespace OpApp {
      * @see A2.5
      */
     export class BroadcastSupervisor {
+        readonly type: 'broadcast/supervisor';
         /* Properties */
         readonly playState: playState;
         readonly playStateError: playStateError;
@@ -115,62 +79,39 @@ declare namespace OpApp {
         onParentalRatingChange(contentId: string, ratings: OIPF.ParentalRating[], DRMSystemId: string, blocked: boolean): void;
         onParentalRatingError(contentId: string, ratings: OIPF.ParentalRating[], DRMSystemId: string): void;
         onSelectedComponentChanged(componentType: number): void;
+        // TODO channel change events are different for opapps - will have quiet/viewerChannel props
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: (event: OIPF.ChannelChangeEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: (event: OIPF.ChannelChangeEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: (event: OIPF.PlayStateChangeEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: (event: OIPF.PlaySpeedChangedEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: (event: OIPF.PlayPositionChangedEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: (event: OIPF.ParentalRatingChangeEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: (event: OIPF.ParentalRatingErrorEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ProgrammesChanged, listener: EventListener): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: (event: OIPF.SelectedComponentChangeEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: (event: OIPF.ChannelChangeEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: (event: OIPF.ChannelChangeEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: (event: OIPF.PlayStateChangeEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: (event: OIPF.PlaySpeedChangedEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: (event: OIPF.PlayPositionChangedEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: (event: OIPF.ParentalRatingChangeEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: (event: OIPF.ParentalRatingErrorEvent) => void): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ProgrammesChanged, listener: EventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: (event: OIPF.SelectedComponentChangeEvent) => void): void;
 
-        addEventListener(eventName: BroadcastSupervisorEvents.ChannelChangeSucceeded, listener: (event: ChannelChangeEvent) => void): void;
-        addEventListener(eventName: BroadcastSupervisorEvents.PlayStateChange, listener: (event: PlayStateChangeEvent) => void): void;
-        addEventListener(eventName: BroadcastSupervisorEvents.PlaySpeedChanged, listener: (event: PlaySpeedChangedEvent) => void): void;
-        addEventListener(eventName: BroadcastSupervisorEvents.PlayPositionChanged, listener: (event: PlayPositionChangedEvent) => void): void;
-        addEventListener(eventName: BroadcastSupervisorEvents.ParentalRatingChange, listener: (event: ParentalRatingChangeEvent) => void): void;
-        addEventListener(eventName: BroadcastSupervisorEvents.ParentalRatingError, listener: (event: ParentalRatingErrorEvent) => void): void;
-        addEventListener(eventName: BroadcastSupervisorEvents.SelectedComponentChanged, listener: (event: SelectedComponentChangeEvent) => void): void;
-        removeEventListener(eventName: BroadcastSupervisorEvents.ChannelChangeSucceeded, listener: (event: ChannelChangeEvent) => void): void;
-        removeEventListener(eventName: BroadcastSupervisorEvents.PlayStateChange, listener: (event: PlayStateChangeEvent) => void): void;
-        removeEventListener(eventName: BroadcastSupervisorEvents.PlaySpeedChanged, listener: (event: PlaySpeedChangedEvent) => void): void;
-        removeEventListener(eventName: BroadcastSupervisorEvents.PlayPositionChanged, listener: (event: PlayPositionChangedEvent) => void): void;
-        removeEventListener(eventName: BroadcastSupervisorEvents.ParentalRatingChange, listener: (event: ParentalRatingChangeEvent) => void): void;
-        removeEventListener(eventName: BroadcastSupervisorEvents.ParentalRatingError, listener: (event: ParentalRatingErrorEvent) => void): void;
-        removeEventListener(eventName: BroadcastSupervisorEvents.SelectedComponentChanged, listener: (event: SelectedComponentChangeEvent) => void): void;
+        getChannelConfig(): OIPF.ChannelConfig;
 
-        getChannelConfig(): Pick<VideoBroadcastObject, "getChannelConfig">;
+        createChannelObject(idType: number, dsd: string, sid: number): OIPF.Channel;
 
-        createChannelObject(
-            idType: number,
-            dsd: string,
-            sid: number,
-        ): Pick<VideoBroadcastObject, "createChannelObject">;
+        createChannelObject(idType: number, onid?: number, tsid?: number, sid?: number, sourceId?: number, ipBroadcastID?: string): OIPF.Channel;
 
-        createChannelObject(
-            idType: number,
-            onid?: number,
-            tsid?: number,
-            sid?: number,
-            sourceId?: number,
-            ipBroadcastID?: string
-        ): Pick<VideoBroadcastObject, "createChannelObject">;
+        setChannel(channel: OIPF.Channel, trickplay?: boolean, contentAccessDescriptorURL?: string): void;
 
-        setChannel(
-            channel: OIPF.Channel,
-            trickplay?: boolean,
-            // tslint:disable-next-line:unified-signatures
-            contentAccessDescriptorURL?: string,
-        ): Pick<VideoBroadcastObject, "setChannel">;
+        setChannel(channel: OIPF.Channel, trickplay?: boolean, contentAccessDescriptorURL?: string, quiet?: number, blockAV?: boolean): void;
 
-        setChannel(
-            channel: OIPF.Channel,
-            trickplay?: boolean,
-            contentAccessDescriptorURL?: string,
-            quiet?: number,
-            // tslint:disable-next-line:unified-signatures
-            blockAV?: boolean,
-        ): Pick<VideoBroadcastObject, "setChannel">;
+        prevChannel(blockAV?: boolean): void;
 
-        setChannel(
-            channel?: OIPF.Channel,
-        ): Pick<VideoBroadcastObject, "setChannel">;
-
-        prevChannel(blockAV?: boolean): Pick<VideoBroadcastObject, "prevChannel">;
-
-        nextChannel(blockAV?: boolean): Pick<VideoBroadcastObject, "nextChannel">;
+        nextChannel(blockAV?: boolean): void;
 
         recordNow(duration: number): string | null | undefined;
         stopRecording(): void;

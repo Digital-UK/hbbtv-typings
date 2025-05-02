@@ -1,5 +1,56 @@
 declare namespace OIPF {
 
+    export const enum VideoBroadcastObjectEvents {
+        ChannelChangeSucceeded = "ChannelChangeSucceeded",
+        ChannelChangeError = "ChannelChangeError",
+        PlayStateChange = "PlayStateChange",
+        PlaySpeedChanged = "PlaySpeedChanged",
+        PlayPositionChanged = "PlayPositionChanged",
+        ProgrammesChanged = "ProgrammesChanged",
+        ParentalRatingChange = "ParentalRatingChange",
+        ParentalRatingError = "ParentalRatingError",
+        SelectedComponentChanged = "SelectedComponentChanged"
+    }
+
+    export interface ChannelChangeEvent extends Event {
+        channel: OIPF.Channel;
+        errorState?: number;
+    }
+    export type ChannelChangeEventListener = (event: OIPF.ChannelChangeEvent) => void;
+
+    export interface PlayStateChangeEvent extends Event {
+        state: number;
+        error?: number;
+    }
+    export type PlayStateChangeEventListener = (event: OIPF.PlayStateChangeEvent) => void;
+
+    export interface PlaySpeedChangedEvent extends Event {
+        speed: number;
+    }
+    export type PlaySpeedChangedEventListener = (event: OIPF.PlaySpeedChangedEvent) => void;
+
+    export interface PlayPositionChangedEvent extends Event {
+        position: number;
+    }
+    export type PlayPositionChangedEventListener = (event: OIPF.PlayPositionChangedEvent) => void;
+
+    export interface ParentalRatingChangeEvent extends Event {
+        contentID: string;
+        ratings: OIPF.Collection<OIPF.ParentalRating>;
+        DRMSystemID: string;
+        blocked: boolean;
+    }
+    export type ParentalRatingChangeEventListener = (event: OIPF.ParentalRatingChangeEvent) => void;
+
+    export type ParentalRatingErrorEvent = Omit<OIPF.ParentalRatingChangeEvent, 'blocked'>;
+    export type ParentalRatingErrorEventListener = (event: OIPF.ParentalRatingErrorEvent) => void;
+    
+    export interface SelectedComponentChangeEvent extends Event {
+        componentType: number;
+    }
+    export type SelectedComponentChangeEventListener = (event: OIPF.SelectedComponentChangeEvent) => void;
+
+
         /**
          * The OITF SHALL support the video/broadcast embedded object with the following properties and methods, which
     SHALL adhere to the tuner related security requirements in section 10.1.3.1. The MIME type of this object SHALL be
@@ -9,7 +60,25 @@ declare namespace OIPF {
          */
         export interface VideoBroadcastObject extends HTMLObjectElement {
             type: 'video/broadcast';
-
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: OIPF.ChannelChangeEventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: OIPF.ChannelChangeEventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: OIPF.PlayStateChangeEventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: OIPF.PlaySpeedChangedEventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: OIPF.PlayPositionChangedEventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: OIPF.ParentalRatingChangeEventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: OIPF.ParentalRatingErrorEventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ProgrammesChanged, listener: EventListener): void;
+            addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: OIPF.SelectedComponentChangeEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: OIPF.ChannelChangeEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: OIPF.ChannelChangeEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: OIPF.PlayStateChangeEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: OIPF.PlaySpeedChangedEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: OIPF.PlayPositionChangedEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: OIPF.ParentalRatingChangeEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: OIPF.ParentalRatingErrorEventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ProgrammesChanged, listener: EventListener): void;
+            removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: OIPF.SelectedComponentChangeEventListener): void;
+    
             /**
              * The width of the area used for rendering the video object. This property is only writable if property
             fullScreen has value false. Changing the width property corresponds to changing the width property
@@ -206,7 +275,7 @@ declare namespace OIPF {
 
             @see http://www.oipf.tv/docs/OIPF-T1-R1-Specification-Volume-5-Declarative-Application-Environment-v1_2-2012-09-19.PDF#page=153
              */
-            bindToCurrentChannel(): void;
+            bindToCurrentChannel(): OIPF.Channel;
 
             /**
              * Creates a Channel object of the specified idType. This method is typically used to create
