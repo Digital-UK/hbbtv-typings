@@ -202,4 +202,8 @@ declare class KeyEventConstants {
    * @see http://www.oipf.tv/docs/oipf-archive/OIPF-T1-R1-Specification-Volume-5-Declarative-Application-Environment-V1_1-2009-10-08.pdf#page=235
    */
   readonly VK_MUTE: number;
+
+  readonly VK_EXIT: number;
+  readonly VK_RECORD: number;
+  readonly VK_CHANNELS: number;
 }
