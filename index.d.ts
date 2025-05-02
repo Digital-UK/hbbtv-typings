@@ -42,7 +42,9 @@
 /// <reference path="./types/opapp/Configuration.d.ts" />
 /// <reference path="./types/opapp/LocalSystem.d.ts" />
 /// <reference path="./types/opapp/objects/ApplicationManagerObject.d.ts" />
+/// <reference path="./types/opapp/objects/ConfigurationObject.d.ts" />
 /// <reference path="./types/opapp/objects/VideoBroadcastObject.d.ts" />
+/// <reference path="./types/opapp/objects/ParentalControlManagerObject.d.ts" />
 
 /**
  * @see http://www.etsi.org/deliver/etsi_ts%5C102700_102799%5C102796%5C01.02.01_60%5Cts_102796v010201p.pdf
