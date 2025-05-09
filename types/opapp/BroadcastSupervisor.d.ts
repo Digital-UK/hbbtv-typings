@@ -4,14 +4,14 @@
 declare namespace OpApp {
 
     /* enums */
-    export const enum playState  {
+    export const enum PlayState  {
         UNREALIZED = 0,
         CONNECTING = 1,
         PRESENTING = 2,
         STOPPED = 3,
     }
 
-    export type playStateError = ChannelChangeErrorState;
+    export type PlayStateError = ChannelChangeErrorState;
 
     export const enum ChannelChangeErrorState {
         CHANNEL_NOT_SUPPORTED = 0,
@@ -43,7 +43,7 @@ declare namespace OpApp {
         COMPONENT_TYPE_SUBTITLE = 2,
     }
 
-    export const enum SEEK_REFERENCE_POINT {
+    export const enum SeekReferencePoint {
         POSITION_CURRENT = 0,
         POSITION_START = 1,
         POSITION_END = 2
@@ -58,8 +58,8 @@ declare namespace OpApp {
     export class BroadcastSupervisor {
         readonly type: 'broadcast/supervisor';
         /* Properties */
-        readonly playState: playState;
-        readonly playStateError: playStateError;
+        readonly playState: PlayState;
+        readonly playStateError: PlayStateError;
         readonly playSpeed: OpApp.VideoBroadcastObject["playSpeed"];
         readonly playPosition: OpApp.VideoBroadcastObject["playPosition"];
         readonly playbackOffset: OpApp.VideoBroadcastObject["playbackOffset"];
@@ -71,7 +71,7 @@ declare namespace OpApp {
 
         /* Callbacks */
         onChannelChangeError(channel: OIPF.Channel, errorState: ChannelChangeErrorState): void;
-        onPlayStateChange(state: playState, error: ChannelChangeErrorState): void;
+        onPlayStateChange(state: PlayState, error: ChannelChangeErrorState): void;
         onChannelChangeSucceeded: (channel: OIPF.Channel) => void;
         onPlaySpeedChanged(speed: number): void;
         onPlayPositionChanged(position: number): void;
