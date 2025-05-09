@@ -129,5 +129,7 @@ declare namespace OpApp {
         stopTimeshift(): boolean;
         selectComponent(componentType: AVComponentType | OIPF.AVComponent): void;
         unselectComponent(componentType: AVComponentType | OIPF.AVComponent): void;
+        
+        bindToCurrentChannel(): OIPF.Channel;
     }
 }
