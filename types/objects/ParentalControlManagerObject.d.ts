@@ -13,13 +13,15 @@ declare namespace OIPF {
 
     export interface ParentalControlManagerObject extends HTMLObjectElement {
         type: 'application/oipfParentalControlManager';
-        parentalPINLength: number;
-        isPINEntryLocked(): boolean;
+        parentalRatingSchemes: OIPF.Collection<OIPF.ParentalRatingScheme>;
+        isPINEntryLocked: boolean;
         setParentalControlStatus(pcPIN: string, enable: boolean): OIPF.PINControlStatus;
-        getParentalControlStatus(): OIPF.PINControlStatus;
+        getParentalControlStatus(): boolean;
+        getBlockUnrated(): boolean;
+        setParentalControlPIN(oldPIN: string, newPIN: string): OIPF.PINControlStatus;
         unlockWithParentalControlPIN(pcPIN: string, target: OIPF.VideoBroadcastObject | HTMLMediaElement): OIPF.PINControlStatus | 3;
         verifyParentalControlPIN(pcPIN: string): OIPF.PINControlStatus;
-        verifyParentalControl(context: object): Promise<OIPF.VerifyParentalControlStatus>;
+        setBlockUnrated(pin: RTCSignalingState, blockUnrated: boolean): OIPF.PINControlStatus;
     }
 
 }
