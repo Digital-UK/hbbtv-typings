@@ -49,6 +49,17 @@ declare namespace OpApp {
         POSITION_END = 2
     }
 
+    export type ChannelChangeErrorCallback = (channel: OIPF.Channel, errorState: ChannelChangeErrorState) => void;
+    export type ChannelChangeSucceededCallback = (channel: OIPF.Channel, viewerChannel: OIPF.Channel, quiet: number) => void;
+    export type ParentalRatingChangeCallback = (contentId: string, ratings: OIPF.ParentalRating[], DRMSystemId: string, blocked: boolean) => void;
+    export type ParentalRatingErrorCallback = (contentId: string, ratings: OIPF.ParentalRating[], DRMSystemId: string) => void;
+    export type PlayStateChangeCallback = (state: PlayState, error: PlayStateError) => void;
+    export type PlayPositionChangeCallback = (position: number) => void;
+    export type PlaySpeedChangeCallback = (speed: number) => void;
+    export type ProgrammesChangedCallback = () => void;
+    export type SelectedComponentChangedCallback = (componentType: number) => void;
+
+
 
     /**
      * BroadcastSupervisor
@@ -70,17 +81,17 @@ declare namespace OpApp {
         readonly currentChannel: OpApp.VideoBroadcastObject["currentChannel"]; 
 
         /* Callbacks */
-        onChannelChangeError(channel: OIPF.Channel, errorState: ChannelChangeErrorState): void;
-        onPlayStateChange(state: PlayState, error: ChannelChangeErrorState): void;
-        onChannelChangeSucceeded: (channel: OIPF.Channel) => void;
-        onPlaySpeedChanged(speed: number): void;
-        onPlayPositionChanged(position: number): void;
-        onProgrammesChanged(): void;
-        onParentalRatingChange(contentId: string, ratings: OIPF.ParentalRating[], DRMSystemId: string, blocked: boolean): void;
-        onParentalRatingError(contentId: string, ratings: OIPF.ParentalRating[], DRMSystemId: string): void;
-        onSelectedComponentChanged(componentType: number): void;
+        onChannelChangeError?: ChannelChangeErrorCallback | null;
+        onChannelChangeSucceeded?: ChannelChangeSucceededCallback | null;
+        onParentalRatingChange?: ParentalRatingChangeCallback | null;
+        onParentalRatingError?: ParentalRatingErrorCallback | null;
+        onPlayPositionChanged?: PlayPositionChangeCallback | null;
+        onPlaySpeedChanged?: PlaySpeedChangeCallback | null;
+        onPlayStateChange?: PlayStateChangeCallback | null;
+        onProgrammesChanged?: ProgrammesChangedCallback | null;
+        onSelectedComponentChanged?: SelectedComponentChangedCallback | null;
         // TODO channel change events are different for opapps - will have quiet/viewerChannel props
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: (event: OIPF.ChannelChangeEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: (event: OpApp.ChannelChangeEvent) => void): void;
         addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: (event: OIPF.ChannelChangeEvent) => void): void;
         addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: (event: OIPF.PlayStateChangeEvent) => void): void;
         addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: (event: OIPF.PlaySpeedChangedEvent) => void): void;
