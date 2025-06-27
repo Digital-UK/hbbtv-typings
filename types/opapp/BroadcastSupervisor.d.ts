@@ -91,24 +91,24 @@ declare namespace OpApp {
         onProgrammesChanged?: ProgrammesChangedCallback | null;
         onSelectedComponentChanged?: SelectedComponentChangedCallback | null;
         // TODO channel change events are different for opapps - will have quiet/viewerChannel props
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: (event: OpApp.ChannelChangeEvent) => void): void;
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: (event: OIPF.ChannelChangeEvent) => void): void;
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: (event: OIPF.PlayStateChangeEvent) => void): void;
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: (event: OIPF.PlaySpeedChangedEvent) => void): void;
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: (event: OIPF.PlayPositionChangedEvent) => void): void;
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: (event: OIPF.ParentalRatingChangeEvent) => void): void;
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: (event: OIPF.ParentalRatingErrorEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: OpApp.ChannelChangeEventListener): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: OpApp.ChannelChangeEventListener): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: OIPF.PlayStateChangeEventListener): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: OIPF.PlaySpeedChangedEventListener): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: OIPF.PlayPositionChangedEventListener): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: OIPF.ParentalRatingChangeEventListener): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: OIPF.ParentalRatingErrorEventListener): void;
         addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ProgrammesChanged, listener: EventListener): void;
-        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: (event: OIPF.SelectedComponentChangeEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: (event: OIPF.ChannelChangeEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: (event: OIPF.ChannelChangeEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: (event: OIPF.PlayStateChangeEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: (event: OIPF.PlaySpeedChangedEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: (event: OIPF.PlayPositionChangedEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: (event: OIPF.ParentalRatingChangeEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: (event: OIPF.ParentalRatingErrorEvent) => void): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ProgrammesChanged, listener: EventListener): void;
-        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: (event: OIPF.SelectedComponentChangeEvent) => void): void;
+        addEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: OIPF.SelectedComponentChangeEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeSucceeded, listener: OpApp.ChannelChangeEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ChannelChangeError, listener: OpApp.ChannelChangeEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayStateChange, listener: OIPF.PlayStateChangeEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlaySpeedChanged, listener: OIPF.PlaySpeedChangedEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.PlayPositionChanged, listener: OIPF.PlayPositionChangedEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingChange, listener: OIPF.ParentalRatingChangeEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ParentalRatingError, listener: OIPF.ParentalRatingErrorEventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.ProgrammesChanged, listener:EventListener): void;
+        removeEventListener(eventName: OIPF.VideoBroadcastObjectEvents.SelectedComponentChanged, listener: OIPF.SelectedComponentChangeEventListener): void;
 
         getChannelConfig(): OIPF.ChannelConfig;
 
