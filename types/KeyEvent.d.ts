@@ -206,4 +206,5 @@ declare class KeyEventConstants {
   readonly VK_EXIT: number;
   readonly VK_RECORD: number;
   readonly VK_CHANNELS: number;
+  readonly VK_OPAPP: number;
 }
